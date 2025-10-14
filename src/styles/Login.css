@@ -1,0 +1,118 @@
+/* Загальний фон */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Inter", sans-serif;
+}
+
+/* Контейнер форми */
+.login-container {
+    background-color: #fff;
+    padding: 40px 35px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    width: 360px;
+    animation: slideUp 0.7s ease-out;
+}
+
+.login-container h2 {
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    color: #222;
+    margin-top: 0;
+}
+
+/* Форма */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px; /* тепер контролюємо відстань між блоками */
+}
+
+/* Кожен блок "label + input" */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+/* Текст над полем */
+.input-group label {
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 6px;
+}
+
+/* Поле вводу */
+.input-group input {
+    background-color: white;
+    color: #555;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 1rem;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
+}
+
+/* Кнопка */
+button {
+    background: linear-gradient(135deg, #007bff, #4b9cff);
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+    background: linear-gradient(135deg, #0062e6, #2e7dfb);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 98, 230, 0.3);
+}
+
+.error {
+    color: #e74c3c;
+    font-size: 0.9rem;
+    text-align: center;
+    opacity: 0;
+}
+
+/* коли показується */
+.error.visible {
+    opacity: 1;
+}
+
+/* коли зникає */
+.error.hidden {
+    display: none;
+}
+
+
+/* Анімації */
+@keyframes slideUp {
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    50% { transform: translateX(4px); }
+    75% { transform: translateX(-4px); }
+    100% { transform: translateX(0); }
+}
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
