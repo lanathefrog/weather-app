@@ -22,18 +22,13 @@ export default function WeatherCard({
             <h3>{dayName}</h3>
             <img src={icon} alt={condition} />
             <p className="condition">{condition}</p>
-            <p className="temp">
-                {Math.round(temp_max)}°C / {Math.round(temp_min)}°C
-            </p>
-            <p className="details">
-                💧 {humidity}% | 💨 {wind} км/год
-            </p>
-            <p className="details">
-                ☔ {chance_of_rain}% | ❄ {chance_of_snow}%
-            </p>
-            <p className="details">
-                🌞 {sunrise} - 🌇 {sunset} | 🔆 UV: {uv}
-            </p>
+            <p className="temp"><strong>Температура:</strong> {Math.round(temp_max)}°C / {Math.round(temp_min)}°C</p>
+            <p className="details"><strong>Вологість:</strong> {humidity}%</p>
+            <p className="details"><strong>Вітер:</strong> {wind} км/год</p>
+            <p className="details"><strong>Ймовірність дощу:</strong> {chance_of_rain}%</p>
+            <p className="details"><strong>Ймовірність снігу:</strong> {chance_of_snow}%</p>
+            <p className="details"><strong>Сонце:</strong> {sunrise} - {sunset}</p>
+            <p className="details"><strong>UV індекс:</strong> {uv}</p>
         </div>
     );
 }
