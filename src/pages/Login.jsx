@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Login.css";
 import Cookies from "js-cookie";
@@ -9,7 +9,6 @@ import users from "../data/users.json";
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [showError, setShowError] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
@@ -27,16 +26,6 @@ function Login() {
             setPassword("");
         }
     };
-
-
-    useEffect(() => {
-        if (showError) {
-            const timer = setTimeout(() => {
-                setShowError(false);
-            }, 2500);
-            return () => clearTimeout(timer);
-        }
-    }, [showError]);
 
     return (
        <div className="login-wrapper">
