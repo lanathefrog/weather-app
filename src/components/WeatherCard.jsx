@@ -14,10 +14,7 @@ export default function WeatherCard({
                                         sunrise,
                                         sunset,
                                     }) {
-
-
     return (
-
         <div className="weather-card">
             <h3>{dayName}</h3>
             <img src={icon} alt={condition} />
@@ -25,12 +22,14 @@ export default function WeatherCard({
             <p className="temp">
                 {Math.round(temp_max)}°C / {Math.round(temp_min)}°C
             </p>
-            <p className="details"><strong>Вологість:</strong> {humidity}%</p>
-            <p className="details"><strong>Вітер:</strong> {wind} км/год</p>
-            <p className="details"><strong>Ймовірність дощу:</strong> {chance_of_rain}%</p>
-            <p className="details"><strong>Ймовірність снігу:</strong> {chance_of_snow}%</p>
-            <p className="details"><strong>Сонце:</strong> {sunrise} - {sunset}</p>
-            <p className="details"><strong>UV індекс:</strong> {uv}</p>
+
+            <p className="details"><strong>Humidity:</strong> {humidity}%</p>
+            <p className="details"><strong>Wind:</strong> {wind} km/h</p>
+            <p className="details"><strong>Chance of rain:</strong> {chance_of_rain}%</p>
+            <p className="details"><strong>Chance of snow:</strong> {chance_of_snow}%</p>
+            <p className="details"><strong>Sunrise:</strong> {sunrise}</p>
+            <p className="details"><strong>Sunset:</strong> {sunset}</p>
+            <p className="details"><strong>UV index:</strong> {uv}</p>
         </div>
     );
 }

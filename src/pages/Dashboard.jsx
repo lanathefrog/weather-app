@@ -1,5 +1,5 @@
-import {useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import WeatherCard from "../components/WeatherCard";
 import "../styles/Dashboard.css";
 
@@ -8,33 +8,46 @@ export default function Dashboard() {
     const [weather, setWeather] = useState([]);
     const [loading, setLoading] = useState(true);
     const [city, setCity] = useState("");
+    const [country, setCountry] = useState("");
     const [error, setError] = useState("");
 
+    useEffect(() => {
+        const isLoggedIn = document.cookie
+            .split("; ")
+            .find((row) => row.startsWith("loggedIn="))
+            ?.split("=")[1];
+
+        if (isLoggedIn !== "true") {
+            navigate("/");
+        }
+    }, [navigate]);
     const handleLogout = () => {
+        document.cookie = "loggedIn=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
         navigate("/");
     };
+
     useEffect(() => {
-        const fetchWeather = async () => {
+        const fetchWeather = async (lat, lon) => {
             try {
                 const res = await fetch(
-                    "https://api.weatherapi.com/v1/forecast.json?key=2839b13ab85f452c9f3193220251410&q=Kyiv&days=5&lang=uk"
+                    `https://api.weatherapi.com/v1/forecast.json?key=2839b13ab85f452c9f3193220251410&q=${lat},${lon}&days=5&lang=en`
                 );
 
                 const data = await res.json();
 
                 if (!data.forecast || !data.forecast.forecastday) {
-                    throw new Error("Не вдалося отримати дані");
+                    throw new Error("Failed to fetch weather data");
                 }
 
-
                 setCity(data.location.name);
+                setCountry(data.location.country);
 
-                const weekdays = ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
+                const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
                 const formatted = data.forecast.forecastday.map((day, i) => {
                     let dayLabel;
-                    if (i === 0) dayLabel = "Сьогодні";
-                    else if (i === 1) dayLabel = "Завтра";
+                    if (i === 0) dayLabel = "Today";
+                    else if (i === 1) dayLabel = "Tomorrow";
                     else {
                         const d = new Date(day.date);
                         dayLabel = `${weekdays[d.getDay()]} (${d.getDate()}.${d.getMonth() + 1})`;
@@ -57,34 +70,44 @@ export default function Dashboard() {
                     };
                 });
 
-
-
-
                 setWeather(formatted);
             } catch (err) {
                 console.error(err);
-                setError("Помилка при завантаженні погоди");
+                setError("Error loading weather data");
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchWeather();
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const { latitude, longitude } = position.coords;
+                    fetchWeather(latitude, longitude);
+                },
+                () => {
+                    console.warn("Geolocation denied, showing Kyiv");
+                    fetchWeather(50.4501, 30.5234);
+                }
+            );
+        } else {
+            console.warn("Browser does not support geolocation");
+            fetchWeather(50.4501, 30.5234);
+        }
     }, []);
-
-
 
     return (
         <div className="dashboard">
             <header className="dashboard-header">
                 <h2>WeatherApp</h2>
-                <div className="city-name">{city}</div>
-
-                <button onClick={handleLogout}>Вийти</button>
+                <div className="city-name">
+                    {city && country ? `${city}, ${country}` : "Detecting location..."}
+                </div>
+                <button onClick={handleLogout}>Logout</button>
             </header>
 
             <main className="weather-container">
-                {loading && <p className="loader">Завантаження...</p>}
+                {loading && <p className="loader">Loading...</p>}
                 {error && <p className="error">{error}</p>}
                 {!loading &&
                     !error &&
@@ -104,9 +127,7 @@ export default function Dashboard() {
                             sunrise={item.sunrise}
                             sunset={item.sunset}
                         />
-                    ))
-                }
-
+                    ))}
             </main>
         </div>
     );

@@ -22,11 +22,13 @@ function Login() {
         if (user) {
             setError("");
             setShowError(false);
+            document.cookie = "loggedIn=true; path=/; max-age=3600";
             navigate("/dashboard");
         } else {
-            setError("Невірний логін або пароль");
+            setError("Incorrent email or password");
             setShowError(true);
         }
+
     };
 
     useEffect(() => {
@@ -41,10 +43,10 @@ function Login() {
     return (
        <div className="login-wrapper">
            <div className="login-container">
-               <h2>Вхід</h2>
+               <h2>Weather App</h2>
                <form onSubmit={handleSubmit}>
                    <div className="input-group">
-                       <label>Електронна пошта:</label>
+                       <label>Email:</label>
                        <input
                            type="email"
                            value={email}
@@ -54,7 +56,7 @@ function Login() {
                    </div>
 
                    <div className="input-group">
-                       <label>Пароль:</label>
+                       <label>Password:</label>
                        <input
                            type="password"
                            value={password}
@@ -69,7 +71,7 @@ function Login() {
                        </p>
                    )}
 
-                   <button type="submit">Увійти</button>
+                   <button type="submit">Login</button>
                </form>
            </div>
        </div>
