@@ -33,7 +33,11 @@
     text-align: center;
     margin-bottom: 10px;
 }
-
+.weather-card .temp {
+    font-size: 1.2rem;
+    text-align: center;
+    color: black;
+}
 .condition {
     align-items: center;
     justify-content: center;
@@ -44,7 +48,6 @@ font-weight: bold;
 }
 
 .weather-card ,
-.weather-card .temp,
 .weather-card .details {
     margin: 4px 0;
     font-size: 0.8rem;
@@ -52,7 +55,6 @@ font-weight: bold;
 }
 
 .weather-card strong,
-.weather-card .temp strong,
 .weather-card .details strong {
     color: #626262;
 }
