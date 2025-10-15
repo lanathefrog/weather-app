@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import Cookies from "js-cookie";
 import WeatherCard from "../components/WeatherCard";
 import "../styles/Dashboard.css";
 
@@ -11,18 +13,18 @@ export default function Dashboard() {
     const [country, setCountry] = useState("");
     const [error, setError] = useState("");
 
-    useEffect(() => {
-        const isLoggedIn = document.cookie
-            .split("; ")
-            .find((row) => row.startsWith("loggedIn="))
-            ?.split("=")[1];
 
-        if (isLoggedIn !== "true") {
-            navigate("/");
+    useEffect(() => {
+        const isLoggedIn = Cookies.get("loggedIn");
+
+        if (!isLoggedIn) {
+            toast.warn("You are not authorized. Please log in.", { autoClose: 2000 });
+            setTimeout(() => navigate("/"), 800);
         }
     }, [navigate]);
+
     const handleLogout = () => {
-        document.cookie = "loggedIn=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+        Cookies.remove("loggedIn");
         navigate("/");
     };
 
@@ -111,23 +113,7 @@ export default function Dashboard() {
                 {error && <p className="error">{error}</p>}
                 {!loading &&
                     !error &&
-                    weather.map((item, index) => (
-                        <WeatherCard
-                            key={index}
-                            dayName={item.dayName}
-                            icon={item.icon}
-                            condition={item.condition}
-                            temp_max={item.temp_max}
-                            temp_min={item.temp_min}
-                            humidity={item.humidity}
-                            wind={item.wind}
-                            chance_of_rain={item.chance_of_rain}
-                            chance_of_snow={item.chance_of_snow}
-                            uv={item.uv}
-                            sunrise={item.sunrise}
-                            sunset={item.sunset}
-                        />
-                    ))}
+                    weather.map((item, index) => <WeatherCard key={index} {...item} />)}
             </main>
         </div>
     );

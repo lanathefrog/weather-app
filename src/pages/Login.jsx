@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Login.css";
+import Cookies from "js-cookie";
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -22,7 +23,7 @@ function Login() {
         if (user) {
             setError("");
             setShowError(false);
-            document.cookie = "loggedIn=true; path=/; max-age=3600";
+            Cookies.set("loggedIn", "true", { expires: 1, secure: true });
             navigate("/dashboard");
         } else {
             setError("Incorrent email or password");
