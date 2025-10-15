@@ -11,20 +11,25 @@ export default function Dashboard() {
     const [loading, setLoading] = useState(true);
     const [city, setCity] = useState("");
     const [country, setCountry] = useState("");
+    const [userEmail, setUserEmail] = useState("");
     const [error, setError] = useState("");
-
 
     useEffect(() => {
         const isLoggedIn = Cookies.get("loggedIn");
+        const email = Cookies.get("userEmail") || "";
 
-        if (!isLoggedIn) {
-            toast.warn("You are not authorized. Please log in.", { autoClose: 2000 });
+        if (isLoggedIn !== "true") {
+            toast.warn("You are not authorized. Please log in.", { autoClose: 2500 });
             setTimeout(() => navigate("/"), 800);
+        } else {
+            setUserEmail(email);
         }
     }, [navigate]);
 
     const handleLogout = () => {
         Cookies.remove("loggedIn");
+        Cookies.remove("userEmail");
+        toast.info("You have successfully logged out.", { autoClose: 2000 });
         navigate("/");
     };
 
@@ -89,6 +94,8 @@ export default function Dashboard() {
                 },
                 () => {
                     console.warn("Geolocation denied, showing Kyiv");
+                    toast.warn("Geolocation denied", { autoClose: 2000 });
+
                     fetchWeather(50.4501, 30.5234);
                 }
             );
@@ -105,15 +112,16 @@ export default function Dashboard() {
                 <div className="city-name">
                     {city && country ? `${city}, ${country}` : "Detecting location..."}
                 </div>
-                <button onClick={handleLogout}>Logout</button>
+                <div className="user-info">
+                    {userEmail && <span className="user-email">{userEmail}</span>}
+                    <button onClick={handleLogout}>Logout</button>
+                </div>
             </header>
 
             <main className="weather-container">
                 {loading && <p className="loader">Loading...</p>}
                 {error && <p className="error">{error}</p>}
-                {!loading &&
-                    !error &&
-                    weather.map((item, index) => <WeatherCard key={index} {...item} />)}
+                {!loading && !error && weather.map((item, index) => <WeatherCard key={index} {...item} />)}
             </main>
         </div>
     );

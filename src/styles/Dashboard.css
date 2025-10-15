@@ -57,3 +57,9 @@
     font-weight: 600;
     font-size: 1.2rem;
 }
+
+.user-email {
+    font-size: 0.9rem;
+    color: #666;
+    margin-right: 15px;
+}
